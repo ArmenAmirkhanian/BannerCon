@@ -168,7 +168,7 @@
   };
 
   function findHeaderRow(rows) {
-    for (let i = 0; i < Math.min(6, rows.length); i++) {
+    for (let i = 0; i < Math.min(20, rows.length); i++) {
       if (rows[i].some(c => String(c || '').trim() === 'Report Key')) return i;
     }
     return 0;
@@ -198,19 +198,19 @@
 
   function transformState(r) {
     const emp     = abbreviateName(r.employee);
-    const vendor  = String(r.vendor || '').trim();
-    const comment = String(r.entryComments || r.bpExplanation || '').trim();
+    const repName  = String(r.reportName || '').trim();
+    const repVendor = String(r.vendor || '').trim();
 
-    const parts = [emp, vendor, comment].filter(Boolean);
+    const parts = [emp, repName, repVendor].filter(Boolean);
     const desc  = parts.join(' - ');
 
     return {
       'TRANS':      '',
       'CLEA':       'N',
-      'FORM':       mapForm(r.policy, r.reportType),
+      'FORM':       '', //mapForm(r.policy, r.reportType),
       'REF #':      r.reportKey,
       'DESCRIPTION': desc,
-      'ACCT DESCRIP': stripAcctCode(r.expenseType),
+      'ACCT DESCRIP': '', //stripAcctCode(r.expenseType),
       'FUNI':       r.fund,
       'OR':         r.org,
       'ACC':        r.accountCode,
@@ -231,11 +231,11 @@
   }
 
   function transformProject(r) {
-    const desc = String(r.entryComments || r.bpExplanation || r.reportName || '').trim();
+    const desc = String(r.bpExplanation || r.employee || '').trim();
 
     return {
       'Date':               formatDate(r.processedDate),
-      'Form':               mapForm(r.policy, r.reportType),
+      'Form':               '',//mapForm(r.policy, r.reportType),
       'Rept Key':           r.reportKey,
       'Account':            r.accountCode,
       'Vendor':             r.vendor,
