@@ -407,10 +407,11 @@
         log(`Data rows (after filtering $0 and blank-fund rows): ${allRows.length}`);
 
         // Split by fund type
-        const stateRows   = allRows.filter(r =>  String(r.fund).trim().startsWith('1'));
-        const projectRows = allRows.filter(r => !String(r.fund).trim().startsWith('1'));
+        const isStateFund = r => /^[135]/.test(String(r.fund).trim());
+        const stateRows   = allRows.filter(r =>  isStateFund(r));
+        const projectRows = allRows.filter(r => !isStateFund(r));
 
-        log(`State fund rows (Fund starts with "1"):  ${stateRows.length}`);
+        log(`State fund rows (Fund starts with "1", "3", or "5"):  ${stateRows.length}`);
         log(`Project fund rows (all others):          ${projectRows.length}`);
 
         // Transform & sort
